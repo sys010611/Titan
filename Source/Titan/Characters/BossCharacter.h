@@ -13,7 +13,7 @@ class TITAN_API ABossCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ABossCharacter();
+	ABossCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
 	// Called when the game starts or when spawned

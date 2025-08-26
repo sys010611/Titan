@@ -2,9 +2,12 @@
 
 
 #include "BossCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "BossMovementComponent.h"
 
 // Sets default values
-ABossCharacter::ABossCharacter()
+ABossCharacter::ABossCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UBossMovementComponent>(ACharacter::CharacterMovementComponentName)) // 커스텀 MovementComponent 사용
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
