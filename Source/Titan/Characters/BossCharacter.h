@@ -15,9 +15,27 @@ public:
 	// Sets default values for this character's properties
 	ABossCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	void PerformMeleeAttack();
+
+	void SetStrafing(bool flag);
+
+	void SetWalking(bool flag);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void PlayMeleeAttackAnimation();
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<class UAnimMontage*> MeleeAttackAnimations;
+
+	UPROPERTY(EditDefaultsOnly)
+	float RunSpeed;
+
+	UPROPERTY(EditDefaultsOnly)
+	float WalkSpeed;
+
 
 public:	
 	// Called every frame

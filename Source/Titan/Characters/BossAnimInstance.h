@@ -13,6 +13,15 @@ UCLASS()
 class TITAN_API UBossAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
+public:
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 protected:
+	UPROPERTY()
+	class ABossCharacter* BossCharacter;
+
+	UPROPERTY(BlueprintReadOnly)
+	float Direction;
 };

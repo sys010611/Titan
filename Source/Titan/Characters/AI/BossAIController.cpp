@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EnemyAIController.h"
+#include "BossAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Titan/Utils/Debug.h"
 
-void AEnemyAIController::OnPossess(APawn* InPawn)
+void ABossAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
@@ -21,12 +21,12 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 				if (UGameplayStatics::GetPlayerCharacter(this, 0))
 				{
 					GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), UGameplayStatics::GetPlayerCharacter(this, 0));
-					D("SET TARGET ACTOR")
+					D("SET TARGET ACTOR");
 				}
 				else
-					D("no Character")
+					D("no Character");
 			}
 			else
-				D("no blackboard")
+				D("no blackboard");
 		});
 }

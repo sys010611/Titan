@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 
-#define D(x) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT(x));}
+#define	D(Format, ...) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT(Format), ##__VA_ARGS__))
+
 
 /**
  * 
