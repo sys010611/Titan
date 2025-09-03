@@ -9,7 +9,7 @@ public class Titan : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", 
-			"LevelSequence", "MovieScene", "AIModule", "GameplayTasks" });
+			"LevelSequence", "MovieScene", "AIModule", "GameplayTasks", "AnimGraphRuntime" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

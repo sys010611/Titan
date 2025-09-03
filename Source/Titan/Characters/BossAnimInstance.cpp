@@ -3,6 +3,7 @@
 
 #include "BossAnimInstance.h"
 #include "BossCharacter.h"
+#include "KismetAnimationLibrary.h"
 
 void UBossAnimInstance::NativeInitializeAnimation()
 {
@@ -17,6 +18,6 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (BossCharacter)
 	{
-		Direction = CalculateDirection(BossCharacter->GetVelocity(), BossCharacter->GetActorRotation());
+		Direction = UKismetAnimationLibrary::CalculateDirection(BossCharacter->GetVelocity(), BossCharacter->GetActorRotation());
 	}
 }

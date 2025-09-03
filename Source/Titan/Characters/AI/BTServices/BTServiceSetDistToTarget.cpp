@@ -25,7 +25,7 @@ void UBTServiceSetDistToTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 				if (APawn* ControlledPawn = AIController->GetPawn())
 				{
 					float Dist = ControlledPawn->GetDistanceTo(TargetActor);
-					D("DIST : %f", Dist);
+					//D("DIST : %f", Dist);
 
 					BB->SetValueAsBool(TEXT("IsInMeleeRange"), Dist <= MeleeRange);
 				}

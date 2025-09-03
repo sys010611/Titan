@@ -12,8 +12,14 @@ EBTNodeResult::Type UBTTaskNodeMeleeAttack::ExecuteTask(UBehaviorTreeComponent& 
 
 	if (ABossCharacter* BossCharacter = Cast<ABossCharacter>(OwnerComp.GetAIOwner()->GetCharacter()))
 	{
-		BossCharacter->PerformMeleeAttack();
-		return EBTNodeResult::Succeeded;
+		if (BossCharacter->ActivateMeleeAbility())
+		{
+			return EBTNodeResult::Succeeded;
+		}
+		else
+		{
+			return EBTNodeResult::Failed;
+		}
 	}
 	else
 	{
