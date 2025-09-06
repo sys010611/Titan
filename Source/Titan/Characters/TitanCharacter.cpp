@@ -2,6 +2,7 @@
 
 
 #include "TitanCharacter.h"
+#include "Titan/Combat/Hitbox.h"
 
 // Sets default values
 ATitanCharacter::ATitanCharacter()
@@ -16,6 +17,17 @@ void ATitanCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (HitboxClass)
+	{
+		Hitbox = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
+
+		if (Hitbox)
+		{
+			Hitbox->AttachMeshToSocket(GetMesh(), TEXT("HitboxSocket"));
+			Hitbox->SetOwner(this);
+			Hitbox->SetInstigator(this);
+		}
+	}
 }
 
 void ATitanCharacter::Attack()

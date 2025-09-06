@@ -8,6 +8,7 @@
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
+#include "Titan/Combat/Hitbox.h"
 
 // Sets default values
 ABossCharacter::ABossCharacter(const FObjectInitializer& ObjectInitializer)
@@ -32,8 +33,25 @@ void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetMeleeAbility();
+
+	if (HitboxClass)
+	{
+		Hitbox = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
+
+		if (Hitbox)
+		{
+			Hitbox->AttachMeshToSocket(GetMesh(), TEXT("HitboxSocket"));
+			Hitbox->SetOwner(this);
+			Hitbox->SetInstigator(this);
+		}
+	}
 }
 
+
+void ABossCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+}
 
 void ABossCharacter::SetStrafing(bool flag)
 {
@@ -84,6 +102,7 @@ UAbilitySystemComponent* ABossCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
+
 
 bool ABossCharacter::ActivateMeleeAbility(bool AllowRemoteActivation)
 {

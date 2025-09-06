@@ -6,10 +6,13 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "Titan/Combat/HitInterface.h"
 #include "BossCharacter.generated.h"
 
+class AHitbox;
+
 UCLASS()
-class TITAN_API ABossCharacter : public ACharacter, public IAbilitySystemInterface
+class TITAN_API ABossCharacter : public ACharacter, public IAbilitySystemInterface, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -18,6 +21,8 @@ public:
 	ABossCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	UFUNCTION(Category = "Abilites|Melee")
 	bool ActivateMeleeAbility(bool AllowRemoteActivation = true);
@@ -46,6 +51,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float WalkSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	TSubclassOf<AHitbox> HitboxClass;
+
+	UPROPERTY()
+	AHitbox* Hitbox;
+
+	
 
 
 public:	

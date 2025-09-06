@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Titan/Combat/HitInterface.h"
 #include "TitanCharacter.generated.h"
 
+class AHitbox;
+
 UCLASS()
-class TITAN_API ATitanCharacter : public ACharacter
+class TITAN_API ATitanCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -20,6 +23,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	void Attack();
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	TSubclassOf<AHitbox> HitboxClass;
+
+	UPROPERTY()
+	AHitbox* Hitbox;
 
 public:	
 	// Called every frame
