@@ -33,6 +33,12 @@ protected:
 	virtual void OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	virtual void OnSuccessfulHit(AActor* HitActor, const FHitResult& Hit);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USceneComponent* BoxTraceEnd;
+
 private:
 	void BoxTrace(FHitResult& BoxHit);
 
@@ -44,12 +50,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* WeaponCollisionBox;
-
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* BoxTraceStart;
-
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* BoxTraceEnd;
 
 
 public:

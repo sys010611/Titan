@@ -22,8 +22,6 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	virtual void PossessedBy(AController* NewController) override;
-
 	UFUNCTION(Category = "Abilites|Melee")
 	bool ActivateMeleeAbility(bool AllowRemoteActivation = true);
 
@@ -35,7 +33,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	virtual void SetMeleeAbility();
+	void SetMeleeAbility();
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
 	UAbilitySystemComponent* AbilitySystemComponent;
@@ -56,7 +54,9 @@ protected:
 	TSubclassOf<AHitbox> HitboxClass;
 
 	UPROPERTY()
-	AHitbox* Hitbox;
+	AHitbox* Hitbox_L;
+	UPROPERTY()
+	AHitbox* Hitbox_R;
 
 	
 

@@ -36,21 +36,24 @@ void ABossCharacter::BeginPlay()
 
 	if (HitboxClass)
 	{
-		Hitbox = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
+		Hitbox_L = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
 
-		if (Hitbox)
+		if (Hitbox_L)
 		{
-			Hitbox->AttachMeshToSocket(GetMesh(), TEXT("HitboxSocket"));
-			Hitbox->SetOwner(this);
-			Hitbox->SetInstigator(this);
+			Hitbox_L->AttachMeshToSocket(GetMesh(), TEXT("Hitbox_L"));
+			Hitbox_L->SetOwner(this);
+			Hitbox_L->SetInstigator(this);
+		}
+
+		Hitbox_R = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
+
+		if (Hitbox_R)
+		{
+			Hitbox_R->AttachMeshToSocket(GetMesh(), TEXT("Hitbox_R"));
+			Hitbox_R->SetOwner(this);
+			Hitbox_R->SetInstigator(this);
 		}
 	}
-}
-
-
-void ABossCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
 }
 
 void ABossCharacter::SetStrafing(bool flag)
@@ -111,7 +114,7 @@ bool ABossCharacter::ActivateMeleeAbility(bool AllowRemoteActivation)
 		return false;
 	}
 
-	D("TryActivateAbility");
+	//D("Enemy TryActivateAbility");
 	return AbilitySystemComponent->TryActivateAbility(MeleeAbilitySpecHandle);
 }
 
