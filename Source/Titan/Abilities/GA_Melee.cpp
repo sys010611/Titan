@@ -15,13 +15,16 @@ void UGA_Melee::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 
 	if (UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance())
 	{
-		FOnMontageBlendingOutStarted BlendOut;
-		BlendOut.BindUObject(this, &ThisClass::OnMontageBlendOut_EndAbility);
-		AnimInstance->Montage_SetBlendingOutDelegate(BlendOut, MontageToPlay); // 
+		//FOnMontageBlendingOutStarted BlendOut;
+		FOnMontageEnded Ended;
+		//BlendOut.BindUObject(this, &ThisClass::OnMontageEnd);
+		Ended.BindUObject(this, &ThisClass::OnMontageEnd);
+		//AnimInstance->Montage_SetBlendingOutDelegate(BlendOut, MontageToPlay); // 
+		AnimInstance->Montage_SetEndDelegate(Ended, MontageToPlay);
 	}
 }
 
-void UGA_Melee::OnMontageBlendOut_EndAbility(UAnimMontage* Montage, bool bInterrupted)
+void UGA_Melee::OnMontageEnd(UAnimMontage* Montage, bool bInterrupted)
 {
 	if (IsActive())
 	{

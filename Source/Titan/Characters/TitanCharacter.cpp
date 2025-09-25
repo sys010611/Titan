@@ -110,12 +110,12 @@ void ATitanCharacter::ExecuteMeleeAttack()
 {
 	if (IsUsingMelee())
 	{
-		D("IsUsingMelee");
+		//D("IsUsingMelee");
 		ExecuteNextCombo();
 	}
 	else
 	{
-		D("NOT IsUsingMelee");
+		//D("NOT IsUsingMelee");
 		ActivateMeleeAbility(false);
 	}
 	
