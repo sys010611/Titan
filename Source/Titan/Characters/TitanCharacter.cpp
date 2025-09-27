@@ -14,40 +14,12 @@ ATitanCharacter::ATitanCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-}
-
-UAbilitySystemComponent* ATitanCharacter::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
 }
 
 // Called when the game starts or when spawned
 void ATitanCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
-	if (HitboxClass)
-	{
-		Hitbox_L = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
-
-		if (Hitbox_L)
-		{
-			Hitbox_L->AttachMeshToSocket(GetMesh(), TEXT("Hitbox_L"));
-			Hitbox_L->SetOwner(this);
-			Hitbox_L->SetInstigator(this);
-		}
-
-		Hitbox_R = GetWorld()->SpawnActor<AHitbox>(HitboxClass);
-
-		if (Hitbox_R)
-		{
-			Hitbox_R->AttachMeshToSocket(GetMesh(), TEXT("Hitbox_R"));
-			Hitbox_R->SetOwner(this);
-			Hitbox_R->SetInstigator(this);
-		}
-	}
 }
 
 void ATitanCharacter::PossessedBy(AController* NewController)
@@ -58,14 +30,6 @@ void ATitanCharacter::PossessedBy(AController* NewController)
 		return;
 
 	SetMeleeAbility();
-}
-
-void ATitanCharacter::SetMeleeAbility()
-{
-	if (!AbilitySystemComponent)
-		return;
-
-	MeleeAbilitySpecHandle = AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(MeleeAbility));
 }
 
 bool ATitanCharacter::IsUsingMelee()
@@ -95,17 +59,6 @@ void ATitanCharacter::GetActiveAbilitiesWithTags(FGameplayTagContainer GameplayT
 	}
 }
 
-bool ATitanCharacter::ActivateMeleeAbility(bool AllowRemoteActivation)
-{
-	if (!AbilitySystemComponent || !MeleeAbilitySpecHandle.IsValid())
-	{
-		return false;
-	}
-
-	//D("Player TryActivateAbility");
-	return AbilitySystemComponent->TryActivateAbility(MeleeAbilitySpecHandle);
-}
-
 void ATitanCharacter::ExecuteMeleeAttack()
 {
 	if (IsUsingMelee())
@@ -129,9 +82,23 @@ void ATitanCharacter::ExecuteNextCombo()
 		{
 			UAnimMontage* CurrMontage = AnimInst->GetCurrentActiveMontage();
 			FName CurrSection = AnimInst->Montage_GetCurrentSection();
+
+			FName NextSectionName;
+
+			D("CanDoFinisher: %d", CanDoFinisher);
+
+			if (CanDoFinisher)
+			{
+				NextSectionName = TEXT("Finisher");
+			}
+			else
+			{
+				NextSectionName = NextComboNotify->NextSectionName;
+			}
+
 			if (NextComboNotify) // null check
 			{
-				AnimInst->Montage_SetNextSection(CurrSection, NextComboNotify->NextSectionName, CurrMontage);
+				AnimInst->Montage_SetNextSection(CurrSection, NextSectionName, CurrMontage);
 				CanCombo = false;
 			}
 		}

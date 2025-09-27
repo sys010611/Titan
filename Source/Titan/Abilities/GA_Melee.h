@@ -22,9 +22,16 @@ public:
 	
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
-
-
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	int32 SectionCount;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UGameplayEffect> DamageGameplayEffect;
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayTag EventTagToWaitFor;
+
+	//UPROPERTY()
+	//class UAbilityTask_WaitGameplayEvent* EventTask;
 };

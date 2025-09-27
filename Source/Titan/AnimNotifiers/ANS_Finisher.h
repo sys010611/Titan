@@ -4,26 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "ANS_Combo.generated.h"
+#include "ANS_Finisher.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TITAN_API UANS_Combo : public UAnimNotifyState
+class TITAN_API UANS_Finisher : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	
 public:
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
-
-	UPROPERTY(EditAnywhere)
-	FName NextSectionName;
-
-	UPROPERTY(EditAnywhere)
-	FName FinisherSectionName;
-
-protected:
-
 };

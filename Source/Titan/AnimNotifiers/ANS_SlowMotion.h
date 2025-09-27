@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "ANS_Combo.generated.h"
+#include "ANS_SlowMotion.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TITAN_API UANS_Combo : public UAnimNotifyState
+class TITAN_API UANS_SlowMotion : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	
@@ -19,11 +19,8 @@ public:
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 	UPROPERTY(EditAnywhere)
-	FName NextSectionName;
+	float StartTimeDilation = 0.1f;
 
 	UPROPERTY(EditAnywhere)
-	FName FinisherSectionName;
-
-protected:
-
+	float EndTimeDilation = 1.f;
 };

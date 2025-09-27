@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "ANS_Combo.generated.h"
+#include "ANS_WeaponTrace.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TITAN_API UANS_Combo : public UAnimNotifyState
+class TITAN_API UANS_WeaponTrace : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	
@@ -19,11 +19,8 @@ public:
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 	UPROPERTY(EditAnywhere)
-	FName NextSectionName;
+	bool bEnableLeft;
 
 	UPROPERTY(EditAnywhere)
-	FName FinisherSectionName;
-
-protected:
-
+	bool bEnableRight;
 };

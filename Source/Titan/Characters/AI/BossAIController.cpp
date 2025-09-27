@@ -12,7 +12,7 @@ void ABossAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	RunBehaviorTree(BehaviorTree);
+	//RunBehaviorTree(BehaviorTree);
 
 	GetWorldTimerManager().SetTimerForNextTick([this]()
 		{

@@ -7,6 +7,12 @@
 #include "Components/SceneComponent.h"
 #include "HitInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Titan/Utils/Debug.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayTagContainer.h"
+#include "GameplayAbilitySpec.h"
+#include "GameplayTagAssetInterface.h"
+#include "Titan/Characters/CharacterBase.h"
 
 // Sets default values
 AHitbox::AHitbox()
@@ -14,13 +20,12 @@ AHitbox::AHitbox()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	PrimaryActorTick.bCanEverTick = true;
-
 	WeaponCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
 	WeaponCollisionBox->SetupAttachment(GetRootComponent());
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	WeaponCollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponCollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	WeaponCollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 	WeaponCollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AHitbox::OnCollisionBoxBeginOverlap);
 	SetRootComponent(WeaponCollisionBox);
 
@@ -52,6 +57,9 @@ void AHitbox::OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	if (OtherActor == GetOwner())
 		return;
 
+	if (Cast<AHitbox>(OtherActor))
+		return;
+
 	if (IgnoreActors.Contains(OtherActor))
 		return;
 
@@ -72,19 +80,19 @@ void AHitbox::OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponen
 				GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, TEXT("Success Hit"));
 			}
 
-			UE_LOG(LogTemp, Warning, TEXT("BoxHit Actor: %s"), *BoxHit.GetActor()->GetName());
+			D("BoxHit Actor: %s", *BoxHit.GetActor()->GetName());
 
-			OnSuccessfulHit(BoxHit.GetActor(), BoxHit);
+			SendDamageEvent(BoxHit.GetActor(), BoxHit);
 
-			UGameplayStatics::ApplyDamage(
-				BoxHit.GetActor(),
-				Damage,
-				GetInstigator()->GetController(),
-				GetOwner(),
-				UDamageType::StaticClass()
-			);
+			//UGameplayStatics::ApplyDamage(
+			//	BoxHit.GetActor(),
+			//	Damage,
+			//	GetInstigator()->GetController(),
+			//	GetOwner(),
+			//	UDamageType::StaticClass()
+			//);
 
-			HitInterface->Execute_GetHit(BoxHit.GetActor(), GetOwner(), BoxHit.ImpactPoint);
+			//HitInterface->Execute_GetHit(BoxHit.GetActor(), GetOwner(), BoxHit.ImpactPoint);
 
 
 			if (HitParticle)
@@ -100,9 +108,24 @@ void AHitbox::OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	}
 }
 
-void AHitbox::OnSuccessfulHit(AActor* HitActor, const FHitResult& Hit)
+void AHitbox::SendDamageEvent(AActor* HitActor, const FHitResult& Hit)
 {
+	FGameplayEventData Payload;
+	Payload.Instigator = this->GetOwner();
+	Payload.Target = HitActor;
 
+	if (ACharacterBase* ThisCharacter = GetOwner<ACharacterBase>())
+	{
+		ThisCharacter->GetOwnedGameplayTags(Payload.InstigatorTags);
+	}
+	if (ACharacterBase* Target = Cast<ACharacterBase>(HitActor))
+	{
+		 Target->GetOwnedGameplayTags(Payload.TargetTags);
+	}
+	Payload.TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitActor);
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this->GetOwner(), FGameplayTag::RequestGameplayTag(TEXT("Damage.Melee")), Payload);
 }
 
 void AHitbox::BoxTrace(FHitResult& BoxHit)
@@ -123,7 +146,7 @@ void AHitbox::BoxTrace(FHitResult& BoxHit)
 		this,
 		Start,
 		End,
-		FVector(70.f, 70.f, 70.f),
+		BoxTraceSize,
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery1,
 		false,

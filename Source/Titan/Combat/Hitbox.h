@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystem.h"
+#include "AbilitySystemInterface.h"
 #include "Hitbox.generated.h"
 
 class UBoxComponent;
@@ -31,13 +32,16 @@ protected:
 
 	UFUNCTION()
 	virtual void OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	virtual void OnSuccessfulHit(AActor* HitActor, const FHitResult& Hit);
+	virtual void SendDamageEvent(AActor* HitActor, const FHitResult& Hit);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USceneComponent* BoxTraceStart;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(EditAnywhere)
+	FVector BoxTraceSize;
 
 private:
 	void BoxTrace(FHitResult& BoxHit);
