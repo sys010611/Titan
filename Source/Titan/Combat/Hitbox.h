@@ -47,9 +47,6 @@ private:
 	void BoxTrace(FHitResult& BoxHit);
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float Damage = 15.f;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	UParticleSystem* HitParticle;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))

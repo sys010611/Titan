@@ -5,6 +5,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectExtension.h"
+#include "Titan/Utils/Debug.h"
 
 UTitanAttributeSet::UTitanAttributeSet()
 {
@@ -25,6 +26,8 @@ void UTitanAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		OnHealthChanged.Broadcast();
+		D("BROADCASTING HEALTH CHANGE");
 	}
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())

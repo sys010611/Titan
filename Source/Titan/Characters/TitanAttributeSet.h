@@ -13,6 +13,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
+
 /**
  * 
  */
@@ -34,17 +36,20 @@ public:
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UTitanAttributeSet, Health);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UTitanAttributeSet, MaxHealth);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_SkillGuage)
 	FGameplayAttributeData SkillGuage;
 	ATTRIBUTE_ACCESSORS(UTitanAttributeSet, SkillGuage);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxSkillGuage)
 	FGameplayAttributeData MaxSkillGuage;
 	ATTRIBUTE_ACCESSORS(UTitanAttributeSet, MaxSkillGuage);
+
+
+	FOnHealthChanged OnHealthChanged;
 
 protected:
 	UFUNCTION()
@@ -58,4 +63,5 @@ protected:
 
 	UFUNCTION()
 	virtual void OnRep_MaxSkillGuage(const FGameplayAttributeData& OldMaxSkillGuage);
+
 };

@@ -54,10 +54,10 @@ void ACharacterBase::BeginPlay()
 	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
 
-	D("health : %f", AttributeSet->GetHealth());
-	D("max health : %f", AttributeSet->GetMaxHealth());
-	D("skill guage : %f", AttributeSet->GetSkillGuage());
-	D("max skill guage : %f", AttributeSet->GetMaxSkillGuage());
+	//D("health : %f", AttributeSet->GetHealth());
+	//D("max health : %f", AttributeSet->GetMaxHealth());
+	//D("skill guage : %f", AttributeSet->GetSkillGuage());
+	//D("max skill guage : %f", AttributeSet->GetMaxSkillGuage());
 }
 
 void ACharacterBase::PossessedBy(AController* NewController)

@@ -8,6 +8,8 @@
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Titan/Combat/Hitbox.h"
+#include "Titan/UI/TitanHUD.h"
+#include "Titan/UI/TitanOverlay.h"
 
 // Sets default values
 ABossCharacter::ABossCharacter()
@@ -28,6 +30,25 @@ ABossCharacter::ABossCharacter()
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//if (UWorld* World = GetWorld())
+	//{
+	//	if (APlayerController* PC = World->GetFirstPlayerController())
+	//	{
+	//		D("APlayerController OK");
+	//		if (ATitanHUD* TitanHUD = PC->GetHUD<ATitanHUD>())
+	//		{
+	//			D("HUD OK");
+	//			if (UTitanOverlay* TitanOverlay = TitanHUD->GetTitanOverlay())
+	//			{
+	//				D("OVERLAY OK");
+	//				TitanOverlay->SetEnemyHealthBar(GetHealth() / GetMaxHealth());
+	//				D("SET ENEMY HEALTH SUCCESS");
+	//			}
+	//		}
+	//	}
+	//}
+	AttributeSet->OnHealthChanged.AddDynamic(this, &ABossCharacter::OnHealthChanged);
 }
 
 void ABossCharacter::SetStrafing(bool flag)
@@ -66,6 +87,28 @@ void ABossCharacter::SetWalking(bool flag)
 	}
 }
 
+
+void ABossCharacter::OnHealthChanged()
+{
+	D("ABossCharacter::OnHealthChanged()");
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			D("APlayerController OK");
+			if (ATitanHUD* TitanHUD = PC->GetHUD<ATitanHUD>())
+			{
+				D("HUD OK");
+				if (UTitanOverlay* TitanOverlay = TitanHUD->GetTitanOverlay())
+				{
+					D("OVERLAY OK");
+					TitanOverlay->SetEnemyHealthBar(GetHealth() / GetMaxHealth());
+					D("SET ENEMY HEALTH SUCCESS");
+				}
+			}
+		}
+	}
+}
 
 // Called every frame
 void ABossCharacter::Tick(float DeltaTime)

@@ -7,6 +7,8 @@
 #include "Titan/Utils/Debug.h"
 #include "Titan/AnimNotifiers/ANS_Combo.h"
 #include "Abilities/GameplayAbility.h"
+#include "Titan/UI/TitanHUD.h"
+#include "Titan/UI/TitanOverlay.h"
 
 // Sets default values
 ATitanCharacter::ATitanCharacter()
@@ -20,6 +22,15 @@ ATitanCharacter::ATitanCharacter()
 void ATitanCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//if (auto PC = GetController<APlayerController>())
+	//{
+	//	if (ATitanHUD* TitanHUD = PC->GetHUD<ATitanHUD>())
+	//	{
+	//		if(UTitanOverlay* TitanOverlay = TitanHUD->GetTitanOverlay())
+	//			TitanOverlay->SetPlayerHealthBar(GetHealth() / GetMaxHealth());
+	//	}
+	//}
 }
 
 void ATitanCharacter::PossessedBy(AController* NewController)
